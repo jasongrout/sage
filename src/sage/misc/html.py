@@ -190,8 +190,19 @@ class HTML:
             t += s[:i] + '<script type="math/tex">%s</script>'%\
                      latex(sage_eval(s[6+i:j], locals=locals))
             s = s[j+7:]
-        print "<html><font color='black'>%s</font></html>"%t
-        return ''
+
+        from sage.misc.misc import EMBEDDED_MODE
+        if EMBEDDED_MODE:
+            if EMBEDDED_MODE['frontend']=='notebook':
+                print "<html><font color='black'>%s</font></html>"%t
+                return ''
+            elif EMBEDDED_MODE['frontend']=='sagecell':
+                import sys
+                sys._sage_.display_message({'text/plain': 'table', 'text/html': "<font color='black'>%s</font>"%t})
+                return ''
+        else:
+            return ''
+
 
     def table(self, x, header = False):
         r"""
@@ -238,7 +249,7 @@ class HTML:
             </table>
             </div>
             </html>
-
+ 
             sage: html.table([(x,n(sin(x), digits=2)) for x in [0..3]], header = ["$x$", "$\sin(x)$"])
             <html>
             <div class="notruncate">
@@ -271,7 +282,14 @@ class HTML:
 
         """
         from table import table
-        table(x, header_row=header)._html_()
+        from sage.misc.misc import EMBEDDED_MODE
+        output_string = table(x, header_row=header)._html_()
+        if EMBEDDED_MODE:
+            if EMBEDDED_MODE['frontend']=='notebook':
+                print "<html>"+output_string+"</html>"
+            elif EMBEDDED_MODE['frontend']=='sagecell':
+                import sys
+                sys._sage_.display_message({'text/plain': 'html snippet', 'text/html': output_string})
 
     def iframe(self, url, height=400, width=800):
         r"""
