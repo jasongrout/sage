@@ -47,6 +47,7 @@ Calculus and plotting
 Algebra
 =======
 
+* :ref:`linear_algebra`
 * :ref:`linear_programming`
 * :ref:`group_theory`
 * :ref:`lie`
