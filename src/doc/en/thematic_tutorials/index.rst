@@ -24,21 +24,32 @@ a `Creative Commons Attribution-Share Alike 3.0 License <http://creativecommons.
   more to get through.
 
 Some of those tutorials are part of a series developed for the MAA
-PREP Workshop `Sage: Using Open-Source Mathematics Software with Undergraduates <../prep/index.html>`_.
+PREP Workshop `Sage: Using Open-Source Mathematics Software with
+Undergraduates <../prep/index.html>`_.
+
+See also the :ref:`search`.
+
 
 Introduction to Sage
 ====================
 
+.. toctree::
+   :maxdepth: 1
+
+   tutorial-notebook-and-help-long
+
+See also the following tutorials:
+
 * `Logging on to a Sage Server and Creating a Worksheet (PREP) <../prep/Logging-On.html>`_
 * `Introductory Sage Tutorial (PREP) <../prep/Intro-Tutorial.html>`_
-* :ref:`tutorial-notebook-and-help-long`
 * `Sage's main tutorial <../tutorial/>`_
 
-
-See also the :ref:`Python and Sage programming tutorials <programming_design>` below.
+See also :ref:`programming_design` below.
 
 Calculus and plotting
 =====================
+
+See the following tutorials:
 
 * `Tutorial: Symbolics and Plotting (PREP) <../prep/Symbolics-and-Basic-Plotting.html>`_
 * `Tutorial: Calculus (PREP) <../prep/Calculus.html>`_
@@ -46,16 +57,24 @@ Calculus and plotting
 
 Algebra
 =======
+.. toctree::
+   :maxdepth: 1
 
-* :ref:`linear_algebra`
-* :ref:`linear_programming`
-* :ref:`group_theory`
-* :ref:`lie`
+   linear_algebra
+   linear_programming
+   group_theory
+   lie
 
 Number Theory
 -------------
 
-* :ref:`numtheory_rsa`
+.. toctree::
+   :maxdepth: 1
+
+   numtheory_rsa
+
+See also:
+
 * :ref:`sage.rings.padics.tutorial`
 
 .. Monoids, Groups, representation Theory
@@ -64,15 +83,23 @@ Number Theory
 Combinatorics
 =============
 
+See the following tutorials:
+
 * :ref:`sage.combinat.tutorial`
 
 Algebraic Combinatorics
 -----------------------
 
+.. toctree::
+   :maxdepth: 1
+
+   sandpile
+
+See the following tutorials:
+
 * :class:`Tutorial: Symmetric Functions <SymmetricFunctions>`
 * :ref:`lie`
 * :ref:`sage.combinat.root_system.plot`
-* :ref:`abelian_sandpile_model`
 
 .. Words
 .. -----
@@ -85,11 +112,17 @@ Algebraic Combinatorics
 Programming and Design
 ======================
 
+.. toctree::
+   :maxdepth: 1
+
+   tutorial-programming-python
+   tutorial-comprehensions
+   tutorial-objects-and-classes
+   functional_programming
+
+See also:
+
 * `Tutorial: Sage Introductory Programming (PREP) <../prep/Programming.html>`_
-* :ref:`tutorial-programming-python`
-* :ref:`tutorial-comprehensions`
-* :ref:`tutorial-objects-and-classes`
-* :ref:`functional_programming`
 
 .. Sage development
 .. ----------------
@@ -97,16 +130,13 @@ Programming and Design
 Modeling Mathematics on a computer
 ----------------------------------
 
-* :ref:`coercion_and_categories`
-* :ref:`sage.categories.primer`
-* :ref:`sage.categories.tutorial`
-
-Indices and tables
-==================
-
-* :ref:`search`
-
 .. toctree::
    :maxdepth: 1
 
-   toctree
+   coercion_and_categories
+
+See also:
+
+* :ref:`sage.categories.primer`
+* :ref:`sage.categories.tutorial`
+
