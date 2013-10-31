@@ -350,12 +350,12 @@ def rgbcolor(c, space='rgb'):
                 raise ValueError("unknown color '%s'" % c)
 
     elif isinstance(c, (list, tuple)):
-        if len(c) != 3:
-            raise ValueError("color list or tuple '%s' must have 3 entries, one for each RGB, HSV, HLS, or HSL channel" % (c, ))
         c = map(mod_one, list(c))
         if space == 'rgb':
             return tuple(c)
-        elif space == 'hsv':
+        if len(c) != 3:
+            raise ValueError("color list or tuple '%s' must have 3 entries, one for each RGB, HSV, HLS, or HSL channel" % (c, ))
+        if space == 'hsv':
             return tuple(map(float, hsv_to_rgb(*c)))
         elif space == 'hls':
             return tuple(map(float, hls_to_rgb(*c)))

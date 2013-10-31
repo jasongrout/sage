@@ -102,7 +102,8 @@ class Text(GraphicPrimitive):
                 'vertical_alignment': 'how to align vertically: top, center, bottom',
                 'horizontal_alignment':'how to align horizontally: left, center, right',
                 'zorder':'The layer level in which to draw',
-                'clip': 'Whether to clip or not.'}
+                'clip': 'Whether to clip or not.',
+                'background_color': 'color of background'}
 
     def _plot3d_options(self, options=None):
         """
@@ -162,6 +163,8 @@ class Text(GraphicPrimitive):
         opts['fontsize'] = int(options['fontsize'])
         opts['verticalalignment'] = options['vertical_alignment']
         opts['horizontalalignment'] = options['horizontal_alignment']
+        if options['background_color'] is not None:
+            opts['backgroundcolor'] = options['background_color']
         if 'zorder' in options:
             opts['zorder'] = options['zorder']
         if options['axis_coords']:
@@ -178,8 +181,8 @@ class Text(GraphicPrimitive):
 
 
 @rename_keyword(color='rgbcolor')
-@options(fontsize=10, rgbcolor=(0,0,1), horizontal_alignment='center',
-         vertical_alignment='center', axis_coords=False, clip=False)
+@options(fontsize=10, rgbcolor='blue', horizontal_alignment='center',
+         vertical_alignment='center', axis_coords=False, clip=False, background_color=None)
 def text(string, xy, **options):
     r"""
     Returns a 2D text graphics object at the point `(x,y)`.
@@ -255,6 +258,8 @@ def text(string, xy, **options):
         raise
     from sage.plot.all import Graphics
     options['rgbcolor'] = to_mpl_color(options['rgbcolor'])
+    if options['background_color'] is not None:
+        options['background_color'] = to_mpl_color(options['background_color'])
     point = (float(x), float(y))
     g = Graphics()
     g._set_extra_kwds(Graphics._extract_kwds_for_show(options, ignore='fontsize'))

@@ -569,7 +569,7 @@ class GraphPlot(SageObject):
                     for i in range(len(local_labels)):
                         self._plot_components['edges'].append(circle((self._pos[a][0],self._pos[a][1]-curr_loop_size), curr_loop_size, rgbcolor=local_labels[i][1], **eoptions))
                         if labels:
-                            self._plot_components['edge_labels'].append(text(local_labels[i][0], (self._pos[a][0], self._pos[a][1]-2*curr_loop_size)))
+                            self._plot_components['edge_labels'].append(text(local_labels[i][0], (self._pos[a][0], self._pos[a][1]-2*curr_loop_size), background_color='white'))
                         curr_loop_size += distance/4
                 elif len(edges_to_draw[(a,b)]) > 1:
                     # Multi-edge
@@ -623,8 +623,8 @@ class GraphPlot(SageObject):
                             self._plot_components['edges'].append(bezier_path([[p1,[even_x(k),even_y(k)],p2]],zorder=1, rgbcolor=local_labels[2*i+1][1], **eoptions))
                         if labels:
                             j = k/2.0
-                            self._plot_components['edge_labels'].append(text(local_labels[2*i][0],[odd_x(j),odd_y(j)]))
-                            self._plot_components['edge_labels'].append(text(local_labels[2*i+1][0],[even_x(j),even_y(j)]))
+                            self._plot_components['edge_labels'].append(text(local_labels[2*i][0],[odd_x(j),odd_y(j)], background_color='white',zorder=2))
+                            self._plot_components['edge_labels'].append(text(local_labels[2*i+1][0],[even_x(j),even_y(j)], background_color='white',zorder=2))
                     if len(local_labels)%2 == 1:
                         edges_to_draw[(a,b)] = [local_labels[-1]] # draw line for last odd
 
@@ -634,13 +634,13 @@ class GraphPlot(SageObject):
                 C,D = self._polar_hack_for_multidigraph(self._pos[a], self._pos[b], self._vertex_radius)
                 self._plot_components['edges'].append(arrow(C,D, rgbcolor=edges_to_draw[(a,b)][0][1], head=edges_to_draw[(a,b)][0][2], **eoptions))
                 if labels:
-                    self._plot_components['edge_labels'].append(text(str(edges_to_draw[(a,b)][0][0]),[(C[0]+D[0])/2., (C[1]+D[1])/2.]))
+                    self._plot_components['edge_labels'].append(text(str(edges_to_draw[(a,b)][0][0]),[(C[0]+D[0])/2., (C[1]+D[1])/2.], background_color='white',zorder=2))
             elif dir:
                 self._plot_components['edges'].append(arrow(self._pos[a],self._pos[b], rgbcolor=edges_to_draw[(a,b)][0][1], arrowshorten=self._arrowshorten, head=edges_to_draw[(a,b)][0][2], **eoptions))
             else:
                 self._plot_components['edges'].append(line([self._pos[a],self._pos[b]], rgbcolor=edges_to_draw[(a,b)][0][1], **eoptions))
             if labels and not self._arcdigraph:
-                self._plot_components['edge_labels'].append(text(str(edges_to_draw[(a,b)][0][0]),[(self._pos[a][0]+self._pos[b][0])/2., (self._pos[a][1]+self._pos[b][1])/2.]))
+                self._plot_components['edge_labels'].append(text(str(edges_to_draw[(a,b)][0][0]),[(self._pos[a][0]+self._pos[b][0])/2., (self._pos[a][1]+self._pos[b][1])/2.], background_color='white', zorder=2))
 
     def _polar_hack_for_multidigraph(self, A, B, VR):
         """
