@@ -158,6 +158,8 @@ class Box(IndexFaceSet):
         """
         return "<Box size='%s %s %s'/>" % tuple(self.size)
 
+    def scenetree_geometry(self):
+        return {'type': 'box', 'size': self.size}
 
 def ColorCube(size, colors, opacity=1, **kwds):
     """
@@ -264,6 +266,9 @@ cdef class Cone(ParametricSurface):
         return "<Cone bottomRadius='%s' height='%s'/>" % (self.radius,
                                                           self.height)
 
+    def scenetree_geometry(self):
+        return {'type': 'cone', 'bottomradius': self.radius, 'height': self.height, 'closed': self.closed}
+
     def get_grid(self, ds):
         """
         Return the grid on which to evaluate this parametric surface.
@@ -364,6 +369,9 @@ cdef class Cylinder(ParametricSurface):
         """
         return "<Cylinder radius='%s' height='%s'/>" % (self.radius,
                                                         self.height)
+
+    def scenetree_geometry(self):
+        return {'type': 'cylinder', 'radius': self.radius, 'height': self.height, 'closed': self.closed}
 
     def tachyon_repr(self, render_params):
         """
@@ -709,6 +717,9 @@ cdef class Sphere(ParametricSurface):
         """
         return "<Sphere radius='%s'/>"%(self.radius)
 
+    def scenetree_geometry(self):
+        return {'type': 'sphere', 'radius': self.radius}
+
     def tachyon_repr(self, render_params):
         """
         Tachyon can natively handle spheres. Ellipsoids rendering is done
@@ -910,6 +921,9 @@ class Text(PrimitiveObject):
             "<Text string='Hi' solid='true'/>"
         """
         return "<Text string='%s' solid='true'/>"%self.string
+
+    def scenetree_geometry(self):
+        return {'type': 'text', 'string': self.string}
 
     def obj_repr(self, render_params):
         """

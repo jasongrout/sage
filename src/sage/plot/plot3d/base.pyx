@@ -1571,6 +1571,10 @@ class Graphics3dGroup(Graphics3d):
         """
         return "\n".join([g.x3d_str() for g in self.all])
 
+    def scenetree_json(self):
+        #options = {'wireframe': self._extra_kwds.get('wireframe', False)}
+        return {'type': 'group', 'children': [g.scenetree_json() for g in self.all]}#, 'options': options}
+
     def obj_repr(self, render_params):
         """
         The obj representation of a group is simply the concatenation of
@@ -1744,6 +1748,11 @@ class TransformGroup(Graphics3dGroup):
         s += "\n</Transform>"
         return s
 
+    def scenetree_json(self):
+        # options = {'wireframe': self._extra_kwds.get('wireframe', False)}
+        return {'type': 'group', 'matrix': self.get_transformation().get_matrix().list(),
+                'children': [g.scenetree_json() for g in self.all]}#,  'options': options}
+
     def json_repr(self, render_params):
         """
         Transformations are applied at the leaf nodes.
@@ -1914,7 +1923,8 @@ class Viewpoint(Graphics3d):
         """
         return "<Viewpoint position='%s %s %s'/>"%self.pos
 
-
+    def scenetree_json(self):
+        return {'type': 'viewpoint', 'position': self.pos}
 cdef class PrimitiveObject(Graphics3d):
     """
     This is the base class for the non-container 3d objects.
@@ -1926,6 +1936,8 @@ cdef class PrimitiveObject(Graphics3d):
                 self.texture = Texture(self.texture)
         else:
             self.texture = Texture(kwds)
+        if 'mesh' in kwds:
+            self._extra_kwds = {'mesh': kwds['mesh']}
 
     def set_texture(self, texture=None, **kwds):
         """
@@ -1953,7 +1965,6 @@ cdef class PrimitiveObject(Graphics3d):
     def texture_set(self):
         """
         EXAMPLES::
-
             sage: G = dodecahedron(color='red')
             sage: G.texture_set()
             {Texture(texture..., red, ff0000)}
@@ -1968,6 +1979,16 @@ cdef class PrimitiveObject(Graphics3d):
             "<Transform>\n<Shape><Sphere radius='1.0'/><Appearance><Material diffuseColor='0.4 0.4 1.0' shininess='1' specularColor='0.0 0.0 0.0'/></Appearance></Shape>\n\n</Transform>"
         """
         return "<Shape>" + self.x3d_geometry() + self.texture.x3d_str() + "</Shape>\n"
+
+    def scenetree_json(self):
+        d = {'type': 'object',
+             'geometry': self.scenetree_geometry(),
+             'texture': self.texture.scenetree_json(),
+             }
+        if self._extra_kwds is not None:
+            if 'mesh' in self._extra_kwds:
+                d['mesh'] = bool(self._extra_kwds['mesh'])
+        return d
 
     def tachyon_repr(self, render_params):
         """
