@@ -1982,10 +1982,10 @@ class MathJax:
             # what happened here?
             raise ValueError("mode must be either 'display' or 'inline'")
 
-        return MathJaxExpr('<html><script type="math/tex{0}">'.format(modecode)
+        return MathJaxExpr('<script type="math/tex{0}">'.format(modecode)
                          + ''.join(sage_configurable_latex_macros)
                          + _Latex_prefs._option['macros']
-                         + '{0}</script></html>'.format(x))
+                         + '{0}</script>'.format(x))
 
 def view(objects, title='Sage', debug=False, sep='', tiny=False,
         pdflatex=None, engine=None, viewer = None, tightpage = None,
@@ -2147,8 +2147,8 @@ def view(objects, title='Sage', debug=False, sep='', tiny=False,
     if pdflatex or (viewer == "pdf" and engine == "latex"):
         engine = "pdflatex"
     # notebook
-    import sage.misc.misc as misc
-    if misc.EMBEDDED_MODE and viewer is None:
+    from sage.misc.display import is_registered, display_html, display_image
+    if is_registered('html') and viewer is None:
         MathJax_okay = True
         for t in latex.mathjax_avoid_list():
             if s.find(t) != -1:
@@ -2157,23 +2157,13 @@ def view(objects, title='Sage', debug=False, sep='', tiny=False,
                 break
         if MathJax_okay:  # put comma at end of line below?
             mathjax_expr = str(MathJax().eval(objects, mode=mode, combine_all=combine_all))
-            if misc.EMBEDDED_MODE['frontend']=='sagecell':
-                mathexpr=mathjax_expr.replace('<html>','').replace('</html>','')
-                import sys
-                sys._sage_.display_message({'text/plain': 'math', 'text/html': mathexpr})
-            else:
-                print mathjax_expr
+            display_html(mathjax_expr)
         else:
             base_dir = os.path.abspath("")
             png_file = graphics_filename(ext='png')
-            png_link = "cell://" + png_file
             png(objects, os.path.join(base_dir, png_file),
                 debug=debug, engine=engine)
-            if misc.EMBEDDED_MODE['frontend']=='sagecell':
-                import sys
-                sys._sage_.display_message({'text/plain': 'math', 'text/image-filename': png_file})
-            else:
-                print '<html><img src="%s"></html>'%png_link  # put comma at end of line?
+            display_image(png_file)
         return
     # command line or notebook with viewer
     tmp = tmp_dir('sage_viewer')
